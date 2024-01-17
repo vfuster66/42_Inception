@@ -1,2 +1,7 @@
 # 42_Inception
 This document is a System Administration related exercise.
+
+## Sources
+- https://github.com/Forstman1/inception-42
+- https://tuto.grademe.fr/inception/
+- https://github.com/Theo2lt/Inception
