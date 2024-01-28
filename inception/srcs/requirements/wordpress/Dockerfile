@@ -8,7 +8,7 @@ RUN apt-get update -y && \
 
 # Copie des scripts et fichiers de configuration
 COPY ./tools/script.sh /
-COPY ./tools/wp-config.php /
+COPY ./conf/wp-config.php /
 
 # Ajustement des permissions
 RUN chmod +x /script.sh
