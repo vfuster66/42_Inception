@@ -1,12 +1,17 @@
 FROM debian:10
 
-RUN apt-get update -y 
+# Mise à jour et installation des paquets
+RUN apt-get update -y && \
+    apt-get install -y php-fpm php-mysql curl && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install php-fpm php-mysql -y
-
-RUN apt-get install curl -y
-
+# Copie des scripts et fichiers de configuration
 COPY ./tools/script.sh /
 COPY ./tools/wp-config.php /
 
+# Ajustement des permissions
+RUN chmod +x /script.sh
+
+# Commande à exécuter au démarrage du conteneur
 CMD [ "/script.sh" ]
