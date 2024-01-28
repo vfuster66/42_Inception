@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Charger les variables d'environnement du fichier .env
-source /root/.env
-
 service mysql start 
 
 echo "CREATE DATABASE IF NOT EXISTS $my_database ;" > my_database.sql
