@@ -34,10 +34,10 @@ echo "server
 }" > /etc/nginx/sites-available/default
 
 # Création d'un fichier index.html simple
-echo '<html>
-<head><title>Bienvenue</title></head>
-<body><h1>Bienvenue sur mon site!</h1></body>
-</html>' > /var/www/html/index.html
+# echo '<html>
+# <head><title>Bienvenue</title></head>
+# <body><h1>Bienvenue sur mon site!</h1></body>
+# </html>' > /var/www/html/index.html
 
 # Modification des permissions
 chmod -R 755 /var/www/html
