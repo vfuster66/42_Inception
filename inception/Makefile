@@ -11,8 +11,8 @@ DOCKER_COMPOSE_FILE = ./srcs/docker-compose.yml
 
 # Cible "build" pour construire les conteneurs
 build:
-	mkdir -p /home/vfuster-/data/mysql
-	mkdir -p /home/vfuster-/data/wordpress
+	mkdir -p /home/$(USER)/data/mysql
+	mkdir -p /home/$(USER)/data/wordpress
 	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up --build -d
 
 # Cible "kill" pour arrêter les conteneurs de force
@@ -29,11 +29,9 @@ clean:
 
 # Cible "fclean" pour nettoyer davantage en supprimant les données persistantes
 fclean: clean
-	rm -r /home/vfuster-/data/mysql
-	rm -r /home/vfuster-/data/wordpress
+	rm -rf /home/$(USER)/data/mysql
+	rm -rf /home/$(USER)/data/wordpress
 	docker system prune -a -f
 
 # Cible "restart" pour nettoyer, construire et redémarrer les conteneurs
 restart: clean build
-
-
