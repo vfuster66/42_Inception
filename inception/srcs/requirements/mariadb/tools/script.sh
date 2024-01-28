@@ -1,16 +1,21 @@
 #!/bin/bash
 
-service mysql start 
+# Démarrage du service MariaDB
+service mysql start
 
-echo "CREATE DATABASE IF NOT EXISTS $my_database ;" > my_database.sql
-echo "CREATE USER IF NOT EXISTS '$user'@'%' IDENTIFIED BY '$user_pwd' ;" >> my_database.sql
-echo "GRANT ALL PRIVILEGES ON $my_database.* TO '$user'@'%' ;" >> my_database.sql
-echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '$root_pwd' ;" >> my_database.sql
-echo "FLUSH PRIVILEGES;" >> my_database.sql
+# Attente que MariaDB soit complètement lancé
+while ! mysqladmin ping --silent; do
+    sleep 1
+done
 
-mysql < my_database.sql
+# Création de la base de données, des utilisateurs et configuration des privilèges
+mysql -e "CREATE DATABASE IF NOT EXISTS $my_database;"
+mysql -e "CREATE USER IF NOT EXISTS '$user'@'%' IDENTIFIED BY '$user_pwd';"
+mysql -e "GRANT ALL PRIVILEGES ON $my_database.* TO '$user'@'%';"
+mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$root_pwd';"
+mysql -e "FLUSH PRIVILEGES;"
 
-kill $(cat /var/run/mysqld/mysqld.pid)
-
+# Garder le processus mysqld actif
 mysqld
+
 
