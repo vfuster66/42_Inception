@@ -1,0 +1,22 @@
+server
+{
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    ssl_certificate /chemin/vers/votre/certificat;
+    ssl_certificate_key /chemin/vers/votre/clé;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    root /var/www/html;
+    index index.html;
+
+    location ~ [^/]\.php(/|$)
+    { 
+        try_files $uri =404;
+        fastcgi_pass wordpress:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
+
