@@ -1,0 +1,99 @@
+services:
+
+    nginx:
+        depends_on:
+            - wordpress
+        container_name: nginx
+        build:
+            context: requirements/nginx
+            dockerfile: Dockerfile
+        ports:
+            - "443:443"
+        networks:
+            - inception_network
+        volumes:
+            - inception_wordpress:/var/www/wordpress
+
+    wordpress:
+        depends_on:
+            - mariadb
+        container_name: wordpress
+        build: requirements/wordpress
+        env_file: .env
+        ports:
+            - "9000:9000"
+        networks:
+            - inception_network
+        volumes:
+            - inception_wordpress:/var/www/wordpress
+
+    mariadb:
+        container_name: mariadb
+        build: requirements/mariadb
+        env_file: .env
+        ports:
+            - "3306:3306"
+        networks:
+            - inception_network
+        volumes:
+            - inception_db:/var/lib/mysql
+
+    adminer:
+        container_name: adminer
+        build: ./requirements/bonus/adminer/.
+        image: adminer:42
+        depends_on:
+            - mariadb
+        ports:
+            - "600:80"
+        networks:
+            - inception_network
+        restart: always
+
+    redis:
+        container_name: redis
+        build: ./requirements/bonus/redis/.
+        image: redis:42
+        volumes:
+            - inception_wordpress:/var/www/wordpress
+        depends_on:
+            - wordpress
+        networks:
+            - inception_network
+        restart: always
+
+    ftp:
+        container_name: ftp
+        build: ./requirements/bonus/ftp/.
+        image: ftp:42
+        depends_on:
+            - wordpress
+        volumes:
+            - inception_wordpress:/home/vfuster-/ftp/files
+        env_file:
+            - .env
+        ports:
+            - "21:21"
+            - "20:20"
+            - "40000-40005:40000-40005"
+        networks:
+            - inception_network
+        restart: always
+
+volumes:
+    inception_wordpress:
+        driver: local
+        driver_opts:
+            type: none
+            device: /home/vfuster-/data/wordpress
+            o: bind
+    inception_db:
+        driver: local
+        driver_opts:
+            type: none
+            device: /home/vfuster-/data/mysql
+            o: bind
+networks:
+    inception_network:
+        driver: bridge
+        external: false
