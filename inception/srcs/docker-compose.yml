@@ -2,6 +2,7 @@ services:
 
     nginx:
         depends_on:
+            - adminer
             - wordpress
         container_name: nginx
         build:
@@ -38,22 +39,10 @@ services:
         volumes:
             - inception_db:/var/lib/mysql
 
-    adminer:
-        container_name: adminer
-        build: ./requirements/bonus/adminer/.
-        image: adminer:42
-        depends_on:
-            - mariadb
-        ports:
-            - "600:80"
-        networks:
-            - inception_network
-        restart: always
-
     redis:
         container_name: redis
         build: ./requirements/bonus/redis/.
-        image: redis:42
+        image: redis
         volumes:
             - inception_wordpress:/var/www/wordpress
         depends_on:
@@ -62,14 +51,26 @@ services:
             - inception_network
         restart: always
 
+    adminer:
+        container_name: adminer
+        build: ./requirements/bonus/adminer
+        image: adminer
+        depends_on:
+            - mariadb
+        ports:
+            - 8080:8080
+        networks:
+            - inception_network
+        restart: unless-stopped
+
     ftp:
         container_name: ftp
         build: ./requirements/bonus/ftp/.
-        image: ftp:42
+        image: ftp
         depends_on:
             - wordpress
         volumes:
-            - inception_wordpress:/home/vfuster-/ftp/files
+            - inception_wordpress:/var/www/wordpress
         env_file:
             - .env
         ports:
@@ -93,6 +94,12 @@ volumes:
             type: none
             device: /home/vfuster-/data/mysql
             o: bind
+    adminer:
+        driver_opts:
+            device: /${HOME}/data/adminer
+            type: none
+            o: bind
+
 networks:
     inception_network:
         driver: bridge
