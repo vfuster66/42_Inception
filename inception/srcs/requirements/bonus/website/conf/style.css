@@ -1,21 +1,32 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 40px;
+.cv-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 20px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    transition: transform 0.2s ease-in-out;
 }
 
-.container {
-    max-width: 800px;
-    margin: auto;
+.cv-container:hover {
+    transform: scale(1.02);
 }
 
-h1, h2 {
-    color: #333;
+@media (max-width: 768px) {
+    .cv-container {
+        flex-direction: column;
+        padding: 5px;
+    }
 }
 
-p {
-    color: #666;
+
+.cv-image {
+    /* Ajoute tes styles pour l'image ici */
+    max-width: 100%; /* Assure que l'image ne déborde pas de l'écran */
+    height: auto; /* Garde le rapport d'aspect original de l'image */
 }
 
-.section {
-    margin-bottom: 20px;
-}
