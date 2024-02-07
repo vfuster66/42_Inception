@@ -21,6 +21,7 @@ fclean: clean
 	@docker volume rm $$(docker volume ls -q);\
 	sudo rm -rf /home/vfuster-/data/mysql/*;\
 	sudo rm -rf /home/vfuster-/data/wordpress/*;
+	sudo rm -rf /home/vfuster-/data/mariadb/*;
 
 .PHONY: all re down stop clean fclean
 
